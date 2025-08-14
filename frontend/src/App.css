@@ -1,4 +1,4 @@
-/* ================== Reset & Base Styles ================== */
+/* ================== Reset & Base ================== */
 * {
   box-sizing: border-box;
 }
@@ -8,35 +8,33 @@ body, #root {
   padding: 0;
   font-family: 'Inter', sans-serif;
   background: #f8fafc;
-  color: #333;
+  color: #222;
   -webkit-font-smoothing: antialiased;
 }
 
-/* ================== Container & Header ================== */
 .app-container {
   max-width: 960px;
   margin: 40px auto;
   padding: 0 20px 40px 20px;
 }
 
+/* Header */
 .app-header {
   font-weight: 700;
   font-size: 2rem;
   margin-bottom: 24px;
 }
 
-/* ================== Filter Bar Wrapper ================== */
-/* Holds the filter inputs and Clear Filters button aligned horizontally */
+/* Filter bar wrapper: holds inputs + clear button */
 .filter-bar-wrapper {
   display: flex;
-  align-items: center; /* Perfect vertical alignment */
+  align-items: center;
   gap: 16px;
   margin-bottom: 28px;
   width: 100%;
 }
 
-/* ================== Filter Bar Inputs Container ================== */
-/* Inputs stay in a row, prevent wrapping on desktop */
+/* Filter inputs container */
 .filter-bar {
   display: flex;
   gap: 16px;
@@ -44,17 +42,16 @@ body, #root {
   flex-wrap: nowrap;
 }
 
-/* ================== Filter Inputs and Selects ================== */
-/* Consistent height, padding, font size, and colors for all filters */
+/* Inputs and selects styling */
 .filter-input,
 .filter-select {
   height: 44px;
-  min-width: 160px;   /* Unified min-width for all inputs */
-  max-width: 260px;   /* Unified max-width for all inputs */
-  flex: 1 1 0;        /* Allows inputs to grow uniformly */
+  min-width: 160px;
+  max-width: 260px;
+  flex: 1 1 0;
   font-size: 1rem;
   background: #fff;
-  color: #222;        /* Ensure visible text color */
+  color: #222;
   border: 1.5px solid #ddd;
   border-radius: 8px;
   outline: none;
@@ -65,11 +62,7 @@ body, #root {
   transition: border-color 0.25s, box-shadow 0.25s;
 }
 
-/* Remove any special case for search input width */
-/* If you have class .message-search on the search input, please remove it to unify widths */
-
-/* ================== Select Specific Styling ================== */
-/* Custom arrow with spacing on the right */
+/* Select arrow */
 .filter-select {
   appearance: none;
   padding-right: 40px;
@@ -79,20 +72,20 @@ body, #root {
     #fff;
 }
 
-/* ================== Input & Select Focus Styles ================== */
+/* Focus styling */
 .filter-input:focus,
 .filter-select:focus {
   border-color: #0052cc;
   box-shadow: 0 0 4px #0052ccaa;
 }
 
-/* ================== Placeholder Text Color ================== */
+/* Placeholder color */
 .filter-input::placeholder,
 .filter-select::placeholder {
   color: #999;
 }
 
-/* ================== Clear Filters Button ================== */
+/* Clear filters button */
 .clear-filters-btn {
   height: 44px;
   min-width: 130px;
@@ -119,33 +112,39 @@ body, #root {
   outline: none;
 }
 
-/* ================== Responsive Styles (Mobile View) ================== */
-@media (max-width: 900px) {
-  /* Allow wrapping of filters and button */
-  .filter-bar-wrapper,
-  .filter-bar {
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-
-  /* Filters and button take full width in column */
-  .filter-input,
-  .filter-select,
-  .clear-filters-btn {
-    min-width: 100%;
-    max-width: 100%;
-    flex: 1 1 100%;
-  }
+/* Tab buttons (Logs / Analytics) */
+.tab-btn {
+  background-color: #eee;
+  color: #222;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 10px 22px;
+  margin-right: 10px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
 }
 
-/* ================== Log List Styles ================== */
+.tab-btn:last-child {
+  margin-right: 0;
+}
+
+.tab-btn.tab-active,
+.tab-btn:disabled {
+  background-color: #0052cc;
+  color: #fff;
+  cursor: default;
+}
+
+/* Logs list */
 .log-list {
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
-/* ================== Log Item Styles ================== */
+/* Log item */
 .log-item {
   border-radius: 12px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.05);
@@ -164,21 +163,13 @@ body, #root {
   outline: none;
 }
 
-/* ================== Log Level Background Colors ================== */
-.log-error {
-  border-left-color: #d32f2f; background: #fdecea;
-}
-.log-warn {
-  border-left-color: #f9a825; background: #fffbe6;
-}
-.log-info {
-  border-left-color: #0288d1; background: #e1f0fb;
-}
-.log-debug {
-  border-left-color: #6e6e6e; background: #f7f7f7;
-}
+/* Log level colors */
+.log-error { border-left-color: #d32f2f; background: #fdecea;}
+.log-warn  { border-left-color: #f9a825; background: #fffbe6;}
+.log-info  { border-left-color: #0288d1; background: #e1f0fb;}
+.log-debug { border-left-color: #6e6e6e; background: #f7f7f7;}
 
-/* ================== Log Text Styles ================== */
+/* Log text */
 .log-field {
   font-size: 1rem;
   color: #222;
@@ -189,7 +180,7 @@ body, #root {
   margin-right: 6px;
 }
 
-/* ================== Metadata Toggle Button & Box ================== */
+/* Metadata toggle/button */
 .metadata-toggle {
   background: #e6f0ff;
   color: #0052cc;
@@ -223,7 +214,7 @@ body, #root {
   margin-top: 6px;
 }
 
-/* ================== Spinner Loader Styles ================== */
+/* Spinner loader */
 .loader {
   border: 8px solid #e0e0e0;
   border-top: 8px solid #0052cc;
@@ -235,11 +226,11 @@ body, #root {
 }
 
 @keyframes spin {
-  0% {transform: rotate(0deg);}
-  100% {transform: rotate(360deg);}
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
-/* ================== Error Message Styles ================== */
+/* Error message */
 .error-message {
   color: #d32f2f;
   font-weight: 600;
@@ -248,8 +239,7 @@ body, #root {
   font-size: 1.1rem;
 }
 
-/* ================== Date-Time Input Placeholder & Color Fixes ================== */
-/* Fix placeholder color for datetime-local inputs */
+/* Date/time input fixes */
 input[type="datetime-local"]::placeholder {
   color: #444 !important;
   opacity: 1;
@@ -262,10 +252,78 @@ input[type="datetime-local"]:-ms-input-placeholder {
   color: #444 !important;
   opacity: 1;
 }
-
-/* Ensure date-time inputs and selects have visible text and white background */
 input[type="datetime-local"],
 select {
   color: #222 !important;
   background-color: #fff !important;
+}
+
+/* ================== Responsive Breakpoint ================== */
+@media (max-width: 900px) {
+  /* Wrap filter bar and its wrapper to stack controls */
+  .filter-bar-wrapper,
+  .filter-bar {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  /* Filters and clear button full width */
+  .filter-input,
+  .filter-select,
+  .clear-filters-btn {
+    min-width: 100%;
+    max-width: 100%;
+    flex: 1 1 100%;
+  }
+
+  /* Make tab buttons full width stacking nicely */
+  .tab-btn {
+    width: 48%;
+    margin-right: 4%;
+    margin-bottom: 12px;
+    font-size: 1.1rem;
+    padding: 12px 0;
+  }
+
+  .tab-btn:last-child {
+    margin-right: 0;
+  }
+
+  /* Slightly larger tap targets on mobile */
+  .filter-input,
+  .filter-select,
+  .clear-filters-btn {
+    height: 50px;
+  }
+
+  /* Log item margin on mobile for spacing */
+  .log-item {
+    margin-top: 12px;
+  }
+}
+
+@media (max-width: 600px) {
+  .app-container {
+    max-width: 100%;
+    padding: 0 8px 32px 8px;    /* Sane mobile side padding */
+  }
+  .filter-bar-wrapper, .filter-bar {
+    gap: 8px;
+  }
+  .filter-input,
+  .filter-select,
+  .clear-filters-btn,
+  .tab-btn {
+    font-size: 1rem;
+    height: 42px;
+    border-radius: 7px;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .tab-btn {
+    width: 100%;           /* stack not side-by-side on very narrow screens */
+    margin-right: 0;
+    margin-bottom: 8px;
+  }
 }
