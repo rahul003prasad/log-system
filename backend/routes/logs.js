@@ -26,13 +26,10 @@ router.post('/', (req, res) => {
   try {
     const logs = readLogs();
 
-    // Add new log
     logs.push(log);
 
-    // Write updated logs to file
     writeLogs(logs);
 
-    // Reply with 201 Created and the stored log
     return res.status(201).json(log);
   } catch (err) {
     console.error('Error saving log:', err);
@@ -45,7 +42,6 @@ router.get('/', (req, res) => {
   try {
     let logs = readLogs();
 
-    // Destructure filters from query params
     const {
       level,
       message,
@@ -57,7 +53,6 @@ router.get('/', (req, res) => {
       commit
     } = req.query;
 
-    // Apply filters combinationally (AND logic)
     if (level) {
       if (allowedLevels.includes(level)) {
         logs = logs.filter(l => l.level === level);
@@ -95,7 +90,6 @@ router.get('/', (req, res) => {
       logs = logs.filter(l => l.commit === commit);
     }
 
-    // Sort results reverse chronologically by timestamp (newest first)
     logs.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 
     return res.status(200).json(logs);

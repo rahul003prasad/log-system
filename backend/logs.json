@@ -34,5 +34,41 @@
     "metadata": {
       "parentResourceId": "server5678"
     }
+  },
+  {
+    "level": "warn",
+    "message": "Failed to connect to database.",
+    "resourceId": "server-123",
+    "timestamp": "2023-09-15T08:00:00Z",
+    "traceId": "abc-xz-123",
+    "spanId": "span-46",
+    "commit": "5e534f",
+    "metadata": {
+      "parentResourceId": "server578"
+    }
+  },
+  {
+    "level": "info",
+    "message": "info to connect to database.",
+    "resourceId": "server-123",
+    "timestamp": "2023-09-15T08:00:00Z",
+    "traceId": "abc-xz-123",
+    "spanId": "span-46",
+    "commit": "5e534f",
+    "metadata": {
+      "parentResourceId": "server578"
+    }
+  },
+  {
+    "level": "debug",
+    "message": "debug to connect to database.",
+    "resourceId": "server-123",
+    "timestamp": "2023-09-15T08:00:00Z",
+    "traceId": "abc-xz-123",
+    "spanId": "span-46",
+    "commit": "5e534f",
+    "metadata": {
+      "parentResourceId": "server578"
+    }
   }
 ]
