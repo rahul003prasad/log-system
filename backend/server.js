@@ -2,12 +2,15 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 
+const logRoutes = require('./routes/logs');
+
 const app = express();
 
-app.use(cors()); // Allow cross-origin requests
-app.use(bodyParser.json()); // Parse JSON request bodies
+app.use(cors());
+app.use(bodyParser.json());
 
-// Placeholder for routes, will add later
+app.use('/logs', logRoutes);
+
 app.get('/', (req, res) => {
   res.send('Log Ingestion & Querying System Backend is running');
 });
