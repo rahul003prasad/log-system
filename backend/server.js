@@ -1,20 +1,29 @@
-// server.js
 const express = require('express');
 const http = require('http');
 const WebSocket = require('ws');
 const cors = require('cors');
 
+const Joi = require('joi');
+
+const logSchema = Joi.object({
+  level: Joi.string().valid('error', 'warn', 'info', 'debug').required(),
+  message: Joi.string().required(),
+  resourceId: Joi.string().required(),
+  traceId: Joi.string().optional(),
+  spanId: Joi.string().optional(),
+  commit: Joi.string().optional(),
+  metadata: Joi.object().optional()
+});
+
+
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// --- In-memory logs store for demo ---
 let logs = [];
 
-// --- API endpoint for existing logs (with filters) ---
 app.get('/logs', (req, res) => {
   let filtered = [...logs];
-
   const { message, level, resourceId, timestamp_start, timestamp_end } = req.query;
 
   if (message) {
@@ -36,22 +45,17 @@ app.get('/logs', (req, res) => {
   res.json(filtered);
 });
 
-// --- Endpoint to add a new log ---
 app.post('/logs', (req, res) => {
+
   const log = { ...req.body, timestamp: new Date().toISOString() };
   logs.push(log);
-
-  // Broadcast the new log to all WebSocket clients
   broadcastNewLog(log);
-
   res.status(201).json(log);
 });
 
-// --- Create HTTP server for both Express and WS ---
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 
-// Broadcast to all connected clients
 function broadcastNewLog(log) {
   const message = JSON.stringify({ type: 'NEW_LOG', payload: log });
   wss.clients.forEach(client => {
@@ -61,17 +65,20 @@ function broadcastNewLog(log) {
   });
 }
 
-// --- WebSocket connection handling ---
 wss.on('connection', ws => {
   console.log('Client connected to WebSocket');
-
   ws.on('close', () => {
     console.log('Client disconnected from WebSocket');
   });
 });
 
-// Start server
-const PORT = process.env.PORT || 5000;
-server.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+// Export app for testing
+module.exports = app;
+
+// Start server only if this file is directly run
+if (require.main === module) {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
+}
