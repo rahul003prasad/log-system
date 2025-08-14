@@ -14,6 +14,8 @@ FROM nginx:alpine
 
 # Copy build output to nginx html folder
 COPY --from=build /usr/src/app/dist /usr/share/nginx/html
+COPY nginx_conf/default.conf /etc/nginx/conf.d/default.conf
+
 
 # Copy custom nginx config if needed or use default
 
