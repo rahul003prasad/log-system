@@ -2,6 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import FilterBar from './components/FilterBar';
 import LogList from './components/LogList';
 import { getLogs } from './services/api';
+import { connectWebSocket, disconnectWebSocket } from './services/socket';
+import './App.css';
 
 function Spinner() {
   return <div className="loader" aria-label="Loading" />;
@@ -31,6 +33,28 @@ export default function App() {
     fetchLogs();
   }, [fetchLogs]);
 
+  // Connect WS on mount, disconnect on unmount
+  useEffect(() => {
+    connectWebSocket((newLog) => {
+      // Add only if log matches current filters
+      if (matchesFilters(newLog, filters)) {
+        setLogs(prev => [newLog, ...prev]);
+      }
+    });
+    return () => {
+      disconnectWebSocket();
+    };
+  }, [filters]);
+
+  const matchesFilters = (log, f) => {
+    if (f.message && !log.message.toLowerCase().includes(f.message.toLowerCase())) return false;
+    if (f.level && log.level !== f.level) return false;
+    if (f.resourceId && log.resourceId !== f.resourceId) return false;
+    if (f.timestamp_start && new Date(log.timestamp) < new Date(f.timestamp_start)) return false;
+    if (f.timestamp_end && new Date(log.timestamp) > new Date(f.timestamp_end)) return false;
+    return true;
+  };
+
   const handleFiltersChange = useCallback(newFilters => {
     setFilters(newFilters);
   }, []);
@@ -40,26 +64,15 @@ export default function App() {
   };
 
   return (
-    <main className="app-container">
+    <div className="app-container">
       <h1 className="app-header">Log Ingestion and Querying System</h1>
-
       <div className="filter-bar-wrapper">
-  <FilterBar onFiltersChange={handleFiltersChange} currentFilters={filters} />
-  <button
-    className="clear-filters-btn"
-    onClick={clearFilters}
-    aria-label="Clear Filters"
-  >Clear Filters</button>
-</div>
-
-
-
-
-
+        <FilterBar onFiltersChange={handleFiltersChange} currentFilters={filters} />
+        <button className="clear-filters-btn" onClick={clearFilters}>Clear Filters</button>
+      </div>
       {loading && <Spinner />}
       {error && <p className="error-message">{error}</p>}
-
       {!loading && !error && <LogList logs={logs} />}
-    </main>
+    </div>
   );
 }
