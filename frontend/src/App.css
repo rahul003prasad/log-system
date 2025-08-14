@@ -1,42 +1,271 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+/* ================== Reset & Base Styles ================== */
+* {
+  box-sizing: border-box;
+}
+
+body, #root {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  background: #f8fafc;
+  color: #333;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ================== Container & Header ================== */
+.app-container {
+  max-width: 960px;
+  margin: 40px auto;
+  padding: 0 20px 40px 20px;
+}
+
+.app-header {
+  font-weight: 700;
+  font-size: 2rem;
+  margin-bottom: 24px;
+}
+
+/* ================== Filter Bar Wrapper ================== */
+/* Holds the filter inputs and Clear Filters button aligned horizontally */
+.filter-bar-wrapper {
+  display: flex;
+  align-items: center; /* Perfect vertical alignment */
+  gap: 16px;
+  margin-bottom: 28px;
+  width: 100%;
+}
+
+/* ================== Filter Bar Inputs Container ================== */
+/* Inputs stay in a row, prevent wrapping on desktop */
+.filter-bar {
+  display: flex;
+  gap: 16px;
+  flex: 1 1 0;
+  flex-wrap: nowrap;
+}
+
+/* ================== Filter Inputs and Selects ================== */
+/* Consistent height, padding, font size, and colors for all filters */
+.filter-input,
+.filter-select {
+  height: 44px;
+  min-width: 160px;   /* Unified min-width for all inputs */
+  max-width: 260px;   /* Unified max-width for all inputs */
+  flex: 1 1 0;        /* Allows inputs to grow uniformly */
+  font-size: 1rem;
+  background: #fff;
+  color: #222;        /* Ensure visible text color */
+  border: 1.5px solid #ddd;
+  border-radius: 8px;
+  outline: none;
+  padding: 0 14px;
+  margin: 0;
+  box-shadow: none;
+  display: block;
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+/* Remove any special case for search input width */
+/* If you have class .message-search on the search input, please remove it to unify widths */
+
+/* ================== Select Specific Styling ================== */
+/* Custom arrow with spacing on the right */
+.filter-select {
+  appearance: none;
+  padding-right: 40px;
+  background:
+    url("data:image/svg+xml,%3Csvg fill='none' viewBox='0 0 16 16' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 6l4 4 4-4' stroke='%230052cc' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    no-repeat right 14px center/20px 20px,
+    #fff;
+}
+
+/* ================== Input & Select Focus Styles ================== */
+.filter-input:focus,
+.filter-select:focus {
+  border-color: #0052cc;
+  box-shadow: 0 0 4px #0052ccaa;
+}
+
+/* ================== Placeholder Text Color ================== */
+.filter-input::placeholder,
+.filter-select::placeholder {
+  color: #999;
+}
+
+/* ================== Clear Filters Button ================== */
+.clear-filters-btn {
+  height: 44px;
+  min-width: 130px;
+  padding: 0 20px;
+  background-color: #0052cc;
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+  flex-shrink: 0;
+  margin: 0;
+}
+
+.clear-filters-btn:hover,
+.clear-filters-btn:focus {
+  background-color: #003d99;
+  outline: none;
+}
+
+/* ================== Responsive Styles (Mobile View) ================== */
+@media (max-width: 900px) {
+  /* Allow wrapping of filters and button */
+  .filter-bar-wrapper,
+  .filter-bar {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  /* Filters and button take full width in column */
+  .filter-input,
+  .filter-select,
+  .clear-filters-btn {
+    min-width: 100%;
+    max-width: 100%;
+    flex: 1 1 100%;
+  }
+}
+
+/* ================== Log List Styles ================== */
+.log-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ================== Log Item Styles ================== */
+.log-item {
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  padding: 16px 24px;
+  cursor: pointer;
+  background: #fff;
+  transition: box-shadow 0.3s;
+  border-left: 8px solid transparent;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.log-item:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.11);
+  outline: none;
+}
+
+/* ================== Log Level Background Colors ================== */
+.log-error {
+  border-left-color: #d32f2f; background: #fdecea;
+}
+.log-warn {
+  border-left-color: #f9a825; background: #fffbe6;
+}
+.log-info {
+  border-left-color: #0288d1; background: #e1f0fb;
+}
+.log-debug {
+  border-left-color: #6e6e6e; background: #f7f7f7;
+}
+
+/* ================== Log Text Styles ================== */
+.log-field {
+  font-size: 1rem;
+  color: #222;
+}
+
+.log-label {
+  font-weight: 600;
+  margin-right: 6px;
+}
+
+/* ================== Metadata Toggle Button & Box ================== */
+.metadata-toggle {
+  background: #e6f0ff;
+  color: #0052cc;
+  font-weight: 600;
+  font-size: 0.97rem;
+  border: none;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0,82,204,0.07);
+  margin-top: 10px;
+  padding: 7px 14px;
+  align-self: flex-start;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.metadata-toggle:hover,
+.metadata-toggle:focus {
+  background: #cfe2ff;
+  color: #003d99;
+}
+
+.metadata-content {
+  background: #f0f4ff;
+  color: #263238;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-family: monospace;
+  font-size: 0.88rem;
+  max-height: 200px;
+  overflow-y: auto;
+  margin-top: 6px;
+}
+
+/* ================== Spinner Loader Styles ================== */
+.loader {
+  border: 8px solid #e0e0e0;
+  border-top: 8px solid #0052cc;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  animation: spin 1s linear infinite;
+  margin: 40px auto;
+}
+
+@keyframes spin {
+  0% {transform: rotate(0deg);}
+  100% {transform: rotate(360deg);}
+}
+
+/* ================== Error Message Styles ================== */
+.error-message {
+  color: #d32f2f;
+  font-weight: 600;
+  margin-top: 24px;
   text-align: center;
+  font-size: 1.1rem;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+/* ================== Date-Time Input Placeholder & Color Fixes ================== */
+/* Fix placeholder color for datetime-local inputs */
+input[type="datetime-local"]::placeholder {
+  color: #444 !important;
+  opacity: 1;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+input[type="datetime-local"]:-moz-placeholder {
+  color: #444 !important;
+  opacity: 1;
 }
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+input[type="datetime-local"]:-ms-input-placeholder {
+  color: #444 !important;
+  opacity: 1;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+/* Ensure date-time inputs and selects have visible text and white background */
+input[type="datetime-local"],
+select {
+  color: #222 !important;
+  background-color: #fff !important;
 }

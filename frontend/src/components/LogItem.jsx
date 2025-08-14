@@ -1,24 +1,74 @@
-import React from 'react';
-
-const levelStyles = {
-  error: { borderLeft: '4px solid #d32f2f', backgroundColor: '#fdecea', color: '#333' },
-  warn: { borderLeft: '4px solid #f9a825', backgroundColor: '#fffbe6', color: '#333' },
-  info: { borderLeft: '4px solid #0288d1', backgroundColor: '#e1f0fb', color: '#333' },
-  debug: { borderLeft: '4px solid #999999', backgroundColor: '#f8f8f8', color: '#333' },
-};
+import React, { useState } from 'react';
 
 export default function LogItem({ log }) {
-  const style = levelStyles[log.level] || {};
+  const [showMetadata, setShowMetadata] = useState(false);
+
+  const levelClassMap = {
+    error: 'log-error',
+    warn: 'log-warn',
+    info: 'log-info',
+    debug: 'log-debug',
+  };
+
   return (
-    <div style={{ ...style, padding: '10px', margin: '5px 0', borderRadius: '3px' }}>
-      <div><strong>Level:</strong> {log.level}</div>
-      <div><strong>Timestamp:</strong> {new Date(log.timestamp).toLocaleString()}</div>
-      <div><strong>Resource ID:</strong> {log.resourceId}</div>
-      <div><strong>Message:</strong> {log.message}</div>
-      <div><strong>Trace ID:</strong> {log.traceId}</div>
-      <div><strong>Span ID:</strong> {log.spanId}</div>
-      <div><strong>Commit:</strong> {log.commit}</div>
-      <div><strong>Metadata:</strong> <pre>{JSON.stringify(log.metadata, null, 2)}</pre></div>
-    </div>
+    <article
+      tabIndex={0}
+      role="button"
+      aria-pressed={showMetadata}
+      onClick={() => setShowMetadata(!showMetadata)}
+      onKeyDown={e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          setShowMetadata(!showMetadata);
+        }
+      }}
+      className={`log-item ${levelClassMap[log.level] || ''}`}
+    >
+      <div className="log-field">
+        <span className="log-label">Level:</span> {log.level}
+      </div>
+      <div className="log-field">
+        <span className="log-label">Timestamp:</span>{' '}
+        {new Date(log.timestamp).toLocaleString()}
+      </div>
+      <div className="log-field">
+        <span className="log-label">Resource ID:</span> {log.resourceId}
+      </div>
+      <div className="log-field">
+        <span className="log-label">Message:</span> {log.message}
+      </div>
+      <div className="log-field">
+        <span className="log-label">Trace ID:</span> {log.traceId}
+      </div>
+      <div className="log-field">
+        <span className="log-label">Span ID:</span> {log.spanId}
+      </div>
+      <div className="log-field">
+        <span className="log-label">Commit:</span> {log.commit}
+      </div>
+
+      <button
+  type="button"
+  className="metadata-toggle"
+  onClick={e => {
+    e.stopPropagation();
+    setShowMetadata(prev => !prev);
+  }}
+  aria-expanded={showMetadata}
+  aria-controls={`metadata-${log.traceId}`}
+>
+  {showMetadata ? 'Hide Metadata' : 'Show Metadata'}
+</button>
+
+
+      {showMetadata && (
+        <pre
+          id={`metadata-${log.traceId}`}
+          className="metadata-content"
+          aria-live="polite"
+        >
+          {JSON.stringify(log.metadata, null, 2)}
+        </pre>
+      )}
+    </article>
   );
 }
