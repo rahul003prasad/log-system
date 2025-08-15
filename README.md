@@ -1,119 +1,156 @@
-# Log Ingestion & Querying System
+# Log Ingestion and Querying System
 
-A full-stack log ingestion and querying platform featuring real-time updates, sophisticated filtering, analytic dashboards, and easy deployment via Docker.
-
----
-
-##  Project Overview
-
-This application consists of:
-
-- **Backend**: A Node.js + Express API that handles log ingestion and querying, with powerful, multi-criteria filtering.
-- **Frontend**: A React-based interface offering dynamic filtering, real-time log delivery via WebSockets, and visual analytics.
-- **Additional Highlights**:
-  - Live log updates for seamless UX
-  - Interactive analytics visualizations
-  - Dockerized for consistent, hassle-free deployment
+## 📌 Overview
+A full-stack log management tool that allows you to **ingest, store, and query logs** efficiently.  
+It features a **React + Vite frontend** for real-time filtering and a **Node.js + Express backend** with JSON-file storage.  
 
 ---
 
-##  Key Features
+## 🛠 Architecture & Tech Stack
 
-- **Advanced API Filtering**: Query logs using combined AND filters across level, message content, resource ID, timestamps, and more.
-- **Reactive Frontend**:
-  - Filter bar includes search, resets, and time-based queries.
-  - New logs surge into view instantly using WebSockets.
-  - Analytics screen shows log distribution by level and trends over time.
-  - Built with responsiveness and accessibility in mind.
-- **Docker Compatibility**: Run completely via Docker for streamlined setup and deployment.
-- **Clean Architecture**: Maintains a clear separation of concerns with thoughtful documentation and code structure.
+- **Backend:** Node.js, Express  
+  - JSON file acts as a simple database (no external DB setup).
+  - Filtering & sorting performed in Node.
+- **Frontend:** React + Vite  
+  - Functional components + Hooks.
+  - Filters: message, level, resourceId, timestamp range, etc.
+- **Testing:**  
+  - Backend: Jest API tests (valid/invalid payloads, filter edge cases).
+  - Frontend: React Testing Library + Jest (UI & API behavior).
+- **Optional Extensions:** WebSockets, analytics dashboard.
+- **Deployment:** Docker support for full-stack containerization.
 
 ---
 
-##  Setup & Installation
+## ⚙ Local Setup
 
-### Prerequisites
+### 1️⃣ Prerequisites
+- Node.js v18+
+- npm
 
-Ensure the following are installed:
-
-- Node.js (version 18 or higher)
-- Docker and Docker Compose
-
-### Option 1: Local Development (without Docker)
-
-**Backend**  
+### 2️⃣ Installation
 ```bash
+# Clone repo
+git clone https://github.com/rahul003prasad/log-system.git
+cd log-system
+
+# Install backend deps
 cd backend
 npm install
-npm start
-```  
-The API will run at `http://localhost:5000`.
 
-**Frontend**  
-```bash
-cd frontend
+# Install frontend deps
+cd ../frontend
 npm install
-npm run dev
-```  
-The UI will be available at `http://localhost:3000`.
-
-### Option 2: Dockerized Setup (Recommended)
-
-```bash
-docker-compose up --build
-```  
-Then visit the app at `http://localhost:3000`.
-
-To stop and clean up containers:
-```bash
-docker-compose down
 ```
 
----
+### 3️⃣ Running Locally
+**Start Backend**
+```bash
+cd backend
+npm start
+```
+**Start Frontend**
+```bash
+cd ../frontend
+npm run dev
+```
 
-##  How to Use
-
-- Use the filter bar to narrow logs by level, message, resourceId, time, and more.
-- Watch live log entries appear without page refresh.
-- Navigate to **Analytics** for real-time summaries and charts.
-- Hit **Clear Filters** to reset your filters at any time.
-
----
-
-##  Design & Architecture
-
-- **In-Memory Log Storage**: Fast and simple, with optional future support for persistent databases.
-- **WebSocket Real-Time Updates**: Keeps the UI in sync with backend events.
-- **React Hooks & Functional Components**: Favored for maintainability and developer ergonomics.
-- **Visualizations via Recharts**: Responsive, customizable charts and dashboards.
-- **Container-first Design**: Enables consistent environments and smoother deployment.
+- Frontend → http://localhost:5173  
+- Backend → http://localhost:5000  
+- API requests from frontend are proxied to backend.
 
 ---
 
-##  Testing & CI/CD
-
-- Frontend and backend components can be individually tested via their respective test scripts.
-- CI/CD pipelines can be set up for automated testing and deployment workflows.
-
----
-
-##  Troubleshooting
-
-- Ensure ports **3000** (frontend) and **5000** (backend) are not occupied.
-- Run `docker-compose logs` to check for container-specific errors.
-- Check environment configuration, especially `VITE_API_URL` for frontend-backend connectivity.
+## 🐳 Docker Setup
+```bash
+docker-compose up --build
+```
+> Spins up backend & frontend containers (see `docker-compose.yml` for port mapping).
 
 ---
 
-##  Future Enhancements
+## 📡 API Endpoints
 
-- Add durable **persistent storage** (e.g., database backends).
-- Support **authentication** with roles and access control.
-- Expand analytics (e.g., log severity over time, exporting charts).
-- Enable **bulk import/export**, pagination, and caching for scale.
+### `POST /logs`
+**Purpose:** Add a new log  
+**Request Body:**
+```json
+{
+  "level": "error|warn|info|debug",
+  "message": "string",
+  "resourceId": "string",
+  "timestamp": "2025-08-15T08:00:00Z",
+  "traceId": "string",
+  "spanId": "string",
+  "commit": "string",
+  "metadata": { "parentResourceId": "string" }
+}
+```
+**Response:** `201 Created` + stored log object
 
 ---
 
-## 🤝 Contributions & Support
+### `GET /logs`
+**Purpose:** Retrieve filtered logs  
+**Optional Query Params:**
+- `level`
+- `message`
+- `resourceId`
+- `timestamp_start` / `timestamp_end`
+- `traceId`
+- `spanId`
+- `commit`
 
-Want to contribute? Great! Please open an issue or submit a pull request. Your input is welcome!
+**Response:** Array of logs sorted reverse-chronologically.
+
+---
+
+## 🧪 Running Tests
+
+### Backend
+```bash
+cd backend
+npm test
+```
+
+### Frontend
+```bash
+cd frontend
+npm test
+```
+
+Covers:
+- UI rendering
+- API interactions & mocks
+- Each filter & combinations
+- Loading/error states
+- Empty results handling
+
+---
+
+## 🎯 Design Choices
+- **File-based DB:** Keeps setup simple for assignments/demos.
+- **Real-time filtering** via React state.
+- **No Redux:** Context & hooks are enough for scope.
+- **Accessibility:** Proper roles & ARIA attributes where applicable.
+
+---
+
+## ⚠ Limitations
+- No authentication (public API)
+- File storage not suited for heavy concurrent writes
+- No log rotation for large datasets
+- WebSockets & analytics optional, not core
+
+---
+
+## 🤝 Contribution
+1. Fork & branch
+2. Make changes with tests
+3. Submit PR
+
+---
+
+**Author:** Your Name  
+GitHub: [rahul003prasad](https://github.com/rahul003prasad)  
+Email: rahul003prasad@gmail.com
