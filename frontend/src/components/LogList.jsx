@@ -2,7 +2,8 @@ import React from 'react';
 import LogItem from './LogItem';
 
 export default function LogList({ logs }) {
-  if (!logs.length) {
+  // Just add the default parameter here—everything else is UNCHANGED!
+  if (!logs || !logs.length) {
     return <p style={{ textAlign: 'center', fontSize: '1rem' }}>No logs found</p>;
   }
   return (
